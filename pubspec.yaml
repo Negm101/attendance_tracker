@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  flutter_slidable: ^2.0.0
+  share_plus: ^6.3.0
 
 dev_dependencies:
   flutter_test:
