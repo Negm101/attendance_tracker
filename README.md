@@ -7,7 +7,7 @@
 -   Display records in list view sorted by time
 -   Show most recent records first
 -   Display time in "time ago" format or "dd MMM yyyy, h:mm a" with toggle button
--   Save toggle setting even when app is closed
+-   Save time format toggle setting even when app is closed
 -   Allow users to add new attendance records
 -   Show indicator when new record is successfully added
 -   Allow users to search list by keyword
