@@ -2,7 +2,7 @@
 
 ## This app is designed to help track and manage users attendance records
 
-### Features
+### Features that was tested on android
 
 -   Display records in list view sorted by time
 -   Show most recent records first
