@@ -1,25 +1,27 @@
-import 'package:attendance_tracker/screens/home.dart';
 import 'package:attendance_tracker/screens/navigation.dart';
+import 'package:attendance_tracker/screens/onboarding.dart';
 import 'package:flutter/material.dart';
+import 'package:is_first_run/is_first_run.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  bool firstRun = await IsFirstRun.isFirstRun();
+  runApp(MyApp(firstRun: firstRun,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+  bool firstRun;
+  MyApp({super.key, required this.firstRun});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Attendance Tracker',
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
+        primaryColorDark: Colors.blueGrey,
       ),
-      home: const NavigationPage(),
+      home: firstRun ? OnBoardingPage() : const NavigationPage(),
     );
   }
 }

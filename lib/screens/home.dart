@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:attendance_tracker/models/attendance.dart';
+import 'package:attendance_tracker/screens/attendance_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -61,24 +65,79 @@ class _HomeState extends State<Home> {
       "user": "Chan Saw Lin",
       "phone": "016783239",
       "check-in": "2022-08-23 11:59:05"
+    },
+    {
+      "user": "John Smith",
+      "phone": "0112345678",
+      "check-in": "2022-09-01 10:00:00"
+    },
+    {
+      "user": "Jane Doe",
+      "phone": "0198765432",
+      "check-in": "2022-09-15 15:30:00"
+    },
+    {
+      "user": "Bob Johnson",
+      "phone": "0111122233",
+      "check-in": "2022-10-01 09:00:00"
+    },
+    {
+      "user": "Alice Nguyen",
+      "phone": "0123456789",
+      "check-in": "2022-10-15 11:45:00"
+    },
+    {
+      "user": "Samuel Williams",
+      "phone": "0199887766",
+      "check-in": "2022-11-01 13:00:00"
+    },
+    {
+      "user": "Emily Brown",
+      "phone": "0198765432",
+      "check-in": "2022-11-15 16:00:00"
     }
   ];
   bool isAscending = true; // for sorting
   TextEditingController searchValue = TextEditingController();
   bool isTimesAgoFormat = true; // for time format
+
+  Future<void> _loadSharedPrefs() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isAscending = prefs.getBool('isAscending') ?? true;
+      isTimesAgoFormat = prefs.getBool('isTimesAgoFormat') ?? true;
+    });
+  }
+
+  Future<void> _saveIsAscedning() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setBool('isAscending', isAscending);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
     attendances = List<Attendance>.from(attendanceRaw
         .map((e) => Attendance.fromJson(e))); // convert to Attendance object
-    attendances.sort((a, b) =>
-        b.checkIn.compareTo(a.checkIn)); // sort by check-in (most recent first)
+    _loadSharedPrefs().then((value) => setState(() {
+          attendances.sort((a, b) {
+            if (isAscending) {
+              return b.checkIn.compareTo(a.checkIn);
+            } else {
+              return a.checkIn.compareTo(b.checkIn);
+            }
+          });
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: TextField(
           controller: searchValue,
           decoration: InputDecoration(
@@ -123,7 +182,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      // show a snackbar when the user scrolls to the end of the list
       body: attendances.isEmpty
           ? const Center(
               child: Text("No data"),
@@ -169,7 +227,7 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                     child: ListTile(
-                      // random leading avatar image from https://picsum.photos/ (placeholder)
+                      // random avatar image from https://picsum.photos/
                       leading: CircleAvatar(
                         backgroundImage: NetworkImage(
                             "https://picsum.photos/seed/${attendances[index].user}/200"),
@@ -188,22 +246,46 @@ class _HomeState extends State<Home> {
                             ),
                             child: Text(isTimesAgoFormat
                                 ? toTimesAgo(attendances[index].checkIn)
-                                : attendances[index].checkIn.toString()),
+                                : attendances[index]
+                                    .checkIn
+                                    .toString()
+                                    .split(".")[0]),
                           ),
                         ],
+                      ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AttendanceDetails(
+                            attendance: attendances[index],
+                            isTimesAgoFormat: isTimesAgoFormat,
+                          ),
+                        ),
                       ),
                     ),
                   );
                 },
               ),
             ),
-
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColorDark,
         onPressed: () {
           addAttendance().then((value) => value != null
               ? setState(() {
                   attendances.add(value); // add new attendance record
-                  sortAttendances(); // sort by check-in time
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.grey[800],
+                      content: const Text("New attendance record added",
+                          style: TextStyle(color: Colors.white)),
+                      action: SnackBarAction(
+                        label: 'OK',
+                        textColor: Colors.white,
+                        onPressed: () {},
+                      ),
+                    ),
+                  );
                 })
               : print("No new attendance record added"));
         },
@@ -223,6 +305,8 @@ class _HomeState extends State<Home> {
         isAscending = true;
       }
     });
+    print(isAscending);
+    _saveIsAscedning();
   }
 
   String toTimesAgo(DateTime dateTime) {

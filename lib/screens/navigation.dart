@@ -1,4 +1,5 @@
 import 'package:attendance_tracker/screens/home.dart';
+import 'package:attendance_tracker/screens/settings.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -37,10 +38,7 @@ class _NavigationPageState extends State<NavigationPage> {
       ),
       body: <Widget>[
         const Home(),
-        Container(
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
+        const Settings()
       ][currentPageIndex],
     );
   }
