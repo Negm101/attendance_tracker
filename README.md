@@ -1,16 +1,17 @@
-# attendance_tracker
+# Welcome to the Flutter Attendance Record App!
 
-A new Flutter project.
+## This app is designed to help track and manage users attendance records
 
-## Getting Started
+### Features that was tested on android
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-   Display records in list view sorted by time
+-   Show most recent records first
+-   Display time in "time ago" format or "dd MMM yyyy, h:mm a" with toggle button
+-   Save time format toggle setting even when app is closed
+-   Allow users to add new attendance records
+-   Show indicator when new record is successfully added
+-   Allow users to search list by keyword
+-   Show records in separate page
+-   Show indicator when end of list is reached
+-   Show onboarding screen for new users
+-   Allow sharing of contact information from records with other apps.
