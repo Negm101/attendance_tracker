@@ -4,14 +4,30 @@
 
 ### Features that was tested on android
 
--   Display records in list view sorted by time
--   Show most recent records first
--   Display time in "time ago" format or "dd MMM yyyy, h:mm a" with toggle button
--   Save time format toggle setting even when app is closed
--   Allow users to add new attendance records
--   Show indicator when new record is successfully added
--   Allow users to search list by keyword
--   Show records in separate page
--   Show indicator when end of list is reached
--   Show onboarding screen for new users
--   Allow sharing of contact information from records with other apps.
+ [-] Display the records in the form of list view and sorted based on the time.
+ [-] The list of records should be sorted from the most recent to the oldest.
+ [-] The time format should be displayed in the format of “time ago” eg. 1 hour ago.
+ [-] The time format is also able to be displayed in another format “dd MMM yyyy, h:mm a” with the change of toggle button.
+ [-] The time format changes should be kept even if users terminate/kill the app.
+ [-] Users are able to add a new attendance record into the list.
+ [-] When a user successfully adds a new record to the list, an indicator should be displayed that user had successfully completed the action.
+ [-] Users are able to search through the list based on the keyword that users key in.
+ [-] Users are able to see a particular record in another page.
+ [-] An indicator should inform the user that “You have reached the end of the list” when the user scrolled to the end of the list.
+ [-] An onboarding screen / introduction screen should be shown to educate users how to use the app when a new user first opens up the app.
+ [-] Users are able to share the contact information from the attendance records to other applications that are installed.
+ [-] You are required to use Git as a proof of your own historical work.
+
+
+### Video Demo 
+ 
+https://user-images.githubusercontent.com/59111065/211183663-e0d7e74b-4c46-428e-843b-505b46b1893e.mp4
+
+### Screenshots
+<p float="left" align="justify">
+  <img src="https://user-images.githubusercontent.com/59111065/211183208-cd730261-152d-4e49-9fae-5ef0e6aa944f.jpg" width=19% height=19%>
+  <img src="https://user-images.githubusercontent.com/59111065/211183415-eeb93976-ec04-4132-a893-67d1b331bdff.jpg" width=19% height=19%>
+  <img src="https://user-images.githubusercontent.com/59111065/211183418-6d7e8c13-66d7-4746-8860-546572277a87.jpg" width=19% height=19%>
+  <img src="https://user-images.githubusercontent.com/59111065/211183574-7db9d6e2-857d-452c-9ddd-39619aad1fc1.jpg" width=19% height=19%>
+  <img src="https://user-images.githubusercontent.com/59111065/211183576-3b16fab0-4a82-423e-8bf1-25d760596cfc.jpg" width=19% height=19%>
+</p>
