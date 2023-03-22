@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:attendance_tracker/models/attendance.dart';
 import 'package:attendance_tracker/screens/attendance_details.dart';
+import 'package:attendance_tracker/services/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:share_plus/share_plus.dart';
@@ -9,94 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   List<Attendance> attendances = [];
-  final List<Map<String, String>> attendanceRaw = [
-    {
-      "user": "Chan Saw Lin",
-      "phone": "0152131113",
-      "check-in": "2022-06-30 16:10:05"
-    },
-    {
-      "user": "Lee Saw Loy",
-      "phone": "0161231346",
-      "check-in": "2022-07-11 15:39:59"
-    },
-    {
-      "user": "Khaw Tong Lin",
-      "phone": "0158398109",
-      "check-in": "2022-08-19 11:10:18"
-    },
-    {
-      "user": "Lim Kok Lin",
-      "phone": "0168279101",
-      "check-in": "2022-08-19 11:11:35"
-    },
-    {
-      "user": "Low Jun Wei",
-      "phone": "0112731912",
-      "check-in": "2022-08-15 13:00:05"
-    },
-    {
-      "user": "Yong Weng Kai",
-      "phone": "0172332743",
-      "check-in": "2022-07-31 18:10:11"
-    },
-    {
-      "user": "Jayden Lee",
-      "phone": "0191236439",
-      "check-in": "2022-08-22 08:10:38"
-    },
-    {
-      "user": "Kong Kah Yan",
-      "phone": "0111931233",
-      "check-in": "2022-07-11 12:00:00"
-    },
-    {
-      "user": "Jasmine Lau",
-      "phone": "0162879190",
-      "check-in": "2022-08-01 12:10:05"
-    },
-    {
-      "user": "Chan Saw Lin",
-      "phone": "016783239",
-      "check-in": "2022-08-23 11:59:05"
-    },
-    {
-      "user": "John Smith",
-      "phone": "0112345678",
-      "check-in": "2022-09-01 10:00:00"
-    },
-    {
-      "user": "Jane Doe",
-      "phone": "0198765432",
-      "check-in": "2022-09-15 15:30:00"
-    },
-    {
-      "user": "Bob Johnson",
-      "phone": "0111122233",
-      "check-in": "2022-10-01 09:00:00"
-    },
-    {
-      "user": "Alice Nguyen",
-      "phone": "0123456789",
-      "check-in": "2022-10-15 11:45:00"
-    },
-    {
-      "user": "Samuel Williams",
-      "phone": "0199887766",
-      "check-in": "2022-11-01 13:00:00"
-    },
-    {
-      "user": "Emily Brown",
-      "phone": "0198765432",
-      "check-in": "2022-11-15 16:00:00"
-    }
-  ];
+
   bool isAscending = true; // for sorting
   TextEditingController searchValue = TextEditingController();
   bool isTimesAgoFormat = true; // for time format
@@ -120,7 +41,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    attendances = List<Attendance>.from(attendanceRaw
+    attendances = List<Attendance>.from(Global.attendanceRaw
         .map((e) => Attendance.fromJson(e))); // convert to Attendance object
     _loadSharedPrefs().then((value) => setState(() {
           attendances.sort((a, b) {
@@ -152,8 +73,8 @@ class _HomeState extends State<Home> {
                     onPressed: () {
                       setState(() {
                         searchValue.clear();
-                        attendances = List<Attendance>.from(attendanceRaw.map(
-                            (e) => Attendance.fromJson(
+                        attendances = List<Attendance>.from(Global.attendanceRaw
+                            .map((e) => Attendance.fromJson(
                                 e))); // convert to Attendance object
                         FocusManager.instance.primaryFocus
                             ?.unfocus(); // close keyboard
@@ -164,7 +85,7 @@ class _HomeState extends State<Home> {
           style: const TextStyle(color: Colors.white),
           onChanged: ((value) {
             setState(() {
-              attendances = List<Attendance>.from(attendanceRaw
+              attendances = List<Attendance>.from(Global.attendanceRaw
                   .where((element) => element["user"]!.contains(value))
                   .map((e) => Attendance.fromJson(e)));
             });
@@ -205,9 +126,7 @@ class _HomeState extends State<Home> {
                 itemCount: attendances.length,
                 itemBuilder: (context, index) {
                   return Slidable(
-                    // Specify a key if the Slidable is dismissible.
                     key: const ValueKey(0),
-
                     // The end action pane is the one at the right or the bottom side.
                     startActionPane: ActionPane(
                       motion: const ScrollMotion(),
@@ -273,7 +192,7 @@ class _HomeState extends State<Home> {
           addAttendance().then((value) => value != null
               ? setState(() {
                   attendances.add(value); // add new attendance record
-
+                  Global.attendanceRaw.add(value.toJson());
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: Colors.grey[800],

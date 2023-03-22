@@ -37,7 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
         ],
       ),
       body: <Widget>[
-        const Home(),
+         Home(),
         const Settings()
       ][currentPageIndex],
     );

@@ -22,7 +22,7 @@ class Attendance {
         checkIn: DateTime.parse(json["check-in"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, String> toJson() => {
         "user": user,
         "phone": phone,
         "check-in": checkIn.toIso8601String(),
